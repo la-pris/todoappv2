@@ -73,17 +73,18 @@ header section :last-child {
 }
 header nav ul,
 header nav li {
-  margin: 0;
+  /* margin: 0;
   padding: 0;
   display: block;
   text-align: right;
-  white-space: nowrap;
+  white-space: nowrap; */
+  @apply m-0 p-0 block text-right whitespace-nowrap
 }
 header nav ul {
   margin: 1rem;
   margin-top: 0;
 }
-header nav a {
+header nav a {  
   display: block;
 }
 
