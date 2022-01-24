@@ -6,6 +6,7 @@ defmodule TodoappWeb.ItemController do
 
   def index(conn, _params) do
     items = Todo.list_items()
+    IO.inspect(Todo.list_items())
     render(conn, "index.html", items: items)
   end
 
@@ -15,6 +16,11 @@ defmodule TodoappWeb.ItemController do
   end
 
   def create(conn, %{"item" => item_params}) do
+    IO.inspect(Todo.create_item(item_params))
+    # item_params = %{
+    #   "text" => 1,
+    #   "person_id" => "hello"
+    # }
     case Todo.create_item(item_params) do
       {:ok, item} ->
         conn
@@ -24,6 +30,9 @@ defmodule TodoappWeb.ItemController do
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
+    # item = Todo.create_item(item_params)
+    # conn
+    # |> redirect(to: Routes.item_path(conn, :show, item))
   end
 
   def show(conn, %{"id" => id}) do
