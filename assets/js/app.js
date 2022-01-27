@@ -26,8 +26,60 @@ import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 
+let Hooks = { };
+Hooks.draggable_hook = {
+    mounted() {
+        this.el.addEventListener("dragstart", e => {
+            e.dataTransfer.dropEffect = "move";
+            e.dataTransfer.setData("text/plain", e.target.id);
+        })
+        // this.el.addEventListener("dragover", e => {
+        //     e.preventDefault();
+        //     e.dataTransfer.dropEffect = "move";
+        // })
+   
+        // this.el.addEventListener("drop", e => {
+        //     e.preventDefault();
+        //     var data = e.dataTransfer.getData("text/plain");
+        //     this.el.appendChild(e.view.document.getElementById(data));
+        // })
+    }
+        
+    }
+
+Hooks.drop_zone = {
+    mounted() {
+   
+      this.el.addEventListener("dragover", e => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = "move";
+      })
+   
+      this.el.addEventListener("drop", e => {
+        e.preventDefault();
+        var data = e.dataTransfer.getData("text/plain");
+        // this.el.appendChild(e.view.document.getElementById(data));
+        // if (el != current) {
+        //     let currentpos = 0, droppedpos = 0;
+        //     for (let it=0; it<items.length; it++) {
+        //       if (current == items[it]) { currentpos = it; }
+        //       if (i == items[it]) { droppedpos = it; }
+        //     }
+        //     if (currentpos < droppedpos) {
+        //       i.parentNode.insertBefore(current, i.nextSibling);
+        //     } else {
+        //       i.parentNode.insertBefore(current, i);
+        //     }
+        // }
+      })
+    }
+  }
+
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
-let liveSocket = new LiveSocket("/live", Socket, {params: {_csrf_token: csrfToken}})
+let liveSocket = new LiveSocket("/live", Socket, {
+    params: {_csrf_token: csrfToken},
+    hooks: Hooks
+})
 
 // Show progress bar on live navigation and form submits
 topbar.config({barColors: {0: "#29d"}, shadowColor: "rgba(0, 0, 0, .3)"})
