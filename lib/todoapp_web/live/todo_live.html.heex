@@ -14,10 +14,12 @@
         </form>
     </header>
     <section>
-        <ul class="todo-list">
-    <%= for item <- @items do %>
-      <div><%= item.text %></div>
-    <% end %>
-</ul>
+        <%= for item <- @items do %>
+        <div class="flex justify-between">
+          <div class="flex-initial"><%= item.text %></div>
+          <button>Edit</button>
+          <button class="flex-initial h-8 px-4 m-2 text-sm text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" phx-click="delete" phx-value-id={item.id} phx-value-pris={item.text}>X</button>
+        </div>
+        <% end %>    
     </section>
 </section>
