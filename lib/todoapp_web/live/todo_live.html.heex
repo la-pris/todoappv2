@@ -13,27 +13,11 @@
             />
         </form>
     </header>
-    <table>
-        <thead>
-            <tr>
-            <th>Text</th>
-            <th>Person</th>
-            <th>Status</th>
-
-            <th></th>
-            </tr>
-        </thead>
-        <div phx-hook="drop_zone">
-            <tbody>
-            <%= for item <-@items do %>
-                <tr id= "draggable" phx-hook="draggable_hook" draggable="true">
-                    <td><%= item.text %></td>
-                    <td><%= item.person_id %></td>
-                    <td><%= item.status %></td>
-                </tr>
-            <% end %>
-            <%# <div phx-hook="drop_zone"  style="width:300px; height:300px; background-color:pink;"> Drop Zone</div> %>
-            </tbody>
-        </div>
-    </table>
+    <section>
+        <ul class="todo-list">
+    <%= for item <- @items do %>
+      <div><%= item.text %></div>
+    <% end %>
+</ul>
+    </section>
 </section>
