@@ -21,7 +21,7 @@ defmodule TodoappWeb.TodoLive do
   @impl true
   def handle_event("create", %{"text" => text}, socket) do
     Item.create_item(%{text: text})
-    {:ok, item} = Item.create_item(%{text: text})
+    # {:ok, item} = Item.create_item(%{text: text})
     # items = socket.assigns.items
     # items = items ++ [item]
     socket = assign(socket, items: Item.list_items(), active: %Item{})
