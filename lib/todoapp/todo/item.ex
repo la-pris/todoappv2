@@ -9,6 +9,7 @@ defmodule Todoapp.Todo.Item do
     field :person_id, :integer
     field :status, :string
     field :text, :string
+    field :order, :float
 
     timestamps()
   end

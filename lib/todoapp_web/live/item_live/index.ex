@@ -3,12 +3,17 @@ defmodule TodoappWeb.ItemLive.Index do
 
   alias Todoapp.Todo
   alias Todoapp.Todo.Item
+  # @topic "live"
+  # alias TodoappWeb.Router
 
   @impl true
   def mount(_params, _session, socket) do
-    IO.inspect(socket)
-    sorteditems = Enum.sort(list_items(), :desc)
-    {:ok, assign(socket, :items, sorteditems)}
+    # IO.inspect(socket)
+    # sorteditems = Enum.sort(list_items(), :desc)
+    # {:ok, assign(socket, :items, sorteditems)}
+    # assign(socket, :changeset, Item.changeset(%Item{}, ),)
+    {:ok, assign(socket, :items, list_items())}
+
   end
 
   @impl true
@@ -35,10 +40,26 @@ defmodule TodoappWeb.ItemLive.Index do
   end
 
   @impl true
-  def handle_event("create", %{"text" => text}, socket) do
-    # Todo.create_item(%{text: text})
-    # socket = assign(socket, items: Todo.list_items(), active: %Todo{})
+  def handle_event("validate", %{"item" => item_params}, socket) do
+    changeset =
+      socket.assigns.item
+      |> Todo.change_item(item_params)
+      |> Map.put(:action, :validate)
 
+    {:noreply, assign(socket, :changeset, changeset)}
+  end
+
+  def handle_event("save", %{"item" => item_params}, socket) do
+    save_item(socket, socket.assigns.action, item_params)
+  end
+
+    # @impl true
+    # def handle_event("create", %{"item" => item_params}, socket) do
+    #   Item.create_item(item_params)
+    #   socket = assign(socket, items: Item.list_items(), active: %Item{})
+    #   TodoappWeb.Endpoint.broadcast_from(self(), @topic, "update", socket.assigns)
+    #   {:noreply, socket}
+    # end
 
 
     # Item.create_item(%{text: text})F
@@ -51,8 +72,20 @@ defmodule TodoappWeb.ItemLive.Index do
     # {:noreply, socket}
 
     # {:noreply, assign(socket, :items, list_items())}
+  # @impl true
+  # def handle_event("save", %{"item" => item_params}, socket) do
+  #   case Todo.create_item(item_params) do
+  #     {:ok, item} ->
+  #       {:noreply,
+  #        socket
+  #        |> put_flash(:info, "user created")
+  #       |> redirect(to: "/index")}
+  #       #  |> redirect(to: /index Routes.item_index_path(TodoappWeb.Endpoint, TodoappWeb.I, item))}
 
-  end
+  #     {:error, %Ecto.Changeset{} = changeset} ->
+  #       {:noreply, assign(socket, changeset: changeset)}
+  #     end
+  # end
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
@@ -61,6 +94,20 @@ defmodule TodoappWeb.ItemLive.Index do
 
     {:noreply, assign(socket, :items, list_items())}
   end
+
+  defp save_item(socket, :new, item_params) do
+    case Todo.create_item(item_params) do
+      {:ok, _item} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, "Item created successfully")
+         |> push_redirect(to: socket.assigns.return_to)}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:noreply, assign(socket, changeset: changeset)}
+    end
+  end
+
 
   defp list_items do
     Todo.list_items()

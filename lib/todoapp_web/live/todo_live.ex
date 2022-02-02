@@ -26,6 +26,7 @@ defmodule TodoappWeb.TodoLive do
     # items = items ++ [item]
     socket = assign(socket, items: Item.list_items(), active: %Item{})
     IO.inspect(socket)
+    #pwede tanggalin
     TodoappWeb.Endpoint.broadcast_from(self(), @topic, "update", socket.assigns)
     {:noreply, socket}
   end

@@ -20,6 +20,7 @@ defmodule TodoappWeb.Router do
     # get "/", PageController, :index
     # resources "/items", ItemController
     #not sure yet what to do here
+    # this is my first LiveView with the ugly design
     # live "/", TodoLive
     live "/items", ItemLive.Index, :index
     live "/items/new", ItemLive.Index, :new
