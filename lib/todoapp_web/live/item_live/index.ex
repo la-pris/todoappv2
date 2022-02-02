@@ -6,7 +6,9 @@ defmodule TodoappWeb.ItemLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, :items, list_items())}
+    IO.inspect(socket)
+    sorteditems = Enum.sort(list_items(), :desc)
+    {:ok, assign(socket, :items, sorteditems)}
   end
 
   @impl true
@@ -30,6 +32,26 @@ defmodule TodoappWeb.ItemLive.Index do
     socket
     |> assign(:page_title, "Listing Items")
     |> assign(:item, nil)
+  end
+
+  @impl true
+  def handle_event("create", %{"text" => text}, socket) do
+    # Todo.create_item(%{text: text})
+    # socket = assign(socket, items: Todo.list_items(), active: %Todo{})
+
+
+
+    # Item.create_item(%{text: text})F
+    # {:ok, item} = Item.create_item(%{text: text})
+    # items = socket.assigns.items
+    # items = items ++ [item]
+    # socket = assign(socket, items: Item.list_items(), active: %Item{})
+    # IO.inspect(socket)
+    # TodoappWeb.Endpoint.broadcast_from(self(), @topic, "update", socket.assigns)
+    # {:noreply, socket}
+
+    # {:noreply, assign(socket, :items, list_items())}
+
   end
 
   @impl true

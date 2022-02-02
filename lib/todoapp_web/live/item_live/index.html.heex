@@ -1,5 +1,19 @@
 <h1>Listing Items</h1>
 
+
+  <form phx-submit="create" id="form">
+      <input 
+      id="new_todo"
+      class="new-todo"
+      type="text"
+      name="text"
+      placeholder="What needs to be done?"
+      autofocus=""
+      required="required"
+      />
+  </form>
+
+
 <%= if @live_action in [:new, :edit] do %>
   <.modal return_to={Routes.item_index_path(@socket, :index)}>
     <.live_component
@@ -25,7 +39,7 @@
   </thead>
   <tbody id="items">
     <%= for item <- @items do %>
-      <tr id={"item-#{item.id}"}>
+      <tr id="draggable" draggable="true" phx-hook="draggable_hook" id={"item-#{item.id}"}>
         <td><%= item.text %></td>
         <td><%= item.person_id %></td>
         <td><%= item.status %></td>
