@@ -28,33 +28,24 @@
   </.modal>
 <% end %>
 
-<table>
-  <thead>
-    <tr>
-      <th>Text</th>
-      <th>Person</th>
-      <th>Status</th>
-
-      <th></th>
-    </tr>
-  </thead>
-  <div>
-  <tbody id="items">
+<ul id="data">
+      <%# <span>Text</span>
+      <span>Person</span>
+      <span>Status</span>
+  <br /> %>
     <%= for item <- @items do %>
-      <tr draggable="true" phx-hook="draggable_hook" id={"item-#{item.id}"}>
-        <td><%= item.text %></td>
-        <td><%= item.person_id %></td>
-        <td><%= item.status %></td>
-
-        <td>
-          <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"><%= live_redirect "Show", to: Routes.item_show_path(@socket, :show, item) %></button>
-          <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"><%= live_patch "Edit", to: Routes.item_index_path(@socket, :edit, item) %></button>
-          <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: item.id, data: [confirm: "Are you sure?"] %></button>
-        </td>
-      </tr>
+      <li draggable="true" phx-hook="draggable_hook" id={"item-#{item.id}"}>
+        <span><%= item.text %></span>
+        <span><%= item.person_id %></span>
+        <span><%= item.status %></span>
+        <span class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"><%= live_redirect "Show", to: Routes.item_show_path(@socket, :show, item) %></span>
+        <span class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"><%= live_patch "Edit", to: Routes.item_index_path(@socket, :edit, item) %></span>
+        <span class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: item.id, data: [confirm: "Are you sure?"] %></span>
+      </li>
     <% end %>
-  </tbody>
-  </div>
-</table>
+ 
+</ul>
 
+
+  <%# <tbody id="items">  </tbody> %>
 <span><%= live_patch "New Item", to: Routes.item_index_path(@socket, :new) %></span>

@@ -32,7 +32,7 @@ function isBefore(el1, el2) {
   if (el2.parentNode === el1.parentNode)
     for (
       var cur = el1.previousSibling;
-      cur && cur.nodeType !== 9;
+      cur && cur.nodeType !== Node.DOCUMENT_NODE;
       cur = cur.previousSibling
     )
       if (cur === el2) return true;
@@ -40,32 +40,32 @@ function isBefore(el1, el2) {
 }
 Hooks.draggable_hook = {
   mounted() {
-    let dragel;
+    var dragel;
 
     this.el.addEventListener("dragstart", (e) => {
-      console.log(el.parentNode);
+      // console.log(dragel.parentNode);
+      dragel = e.target;
       e.dataTransfer.dropEffect = "move";
       e.dataTransfer.setData("text/plain", e.target.id);
-      dragel = e.target;
+      // dragel = e.target;
     });
 
     this.el.addEventListener("dragover", (e) => {
       e.preventDefault();
       e.dataTransfer.dropEffect = "move";
       // console.log(e.target);
-      if (isBefore(dragel, e.target))
-        e.target.parentNode.insertBefore(dragel, e.target);
-      else e.target.parentNode.insertBefore(dragel, e.target.nextSibling);
+      // if (isBefore(dragel, e.target))
+      //   e.target.parentNode.insertBefore(dragel, e.target);
+      // else e.target.parentNode.insertBefore(dragel, e.target.nextSibling);
+    });
+    this.el.addEventListener("drop", (e) => {
+      e.preventDefault();
+      var data = e.dataTransfer.getData("text/plain");
+      this.el.appendChild(e.view.document.getElementById(data));
     });
     // this.el.addEventListener("dragover", e => {
     //     e.preventDefault();
     //     e.dataTransfer.dropEffect = "move";
-    // })
-
-    // this.el.addEventListener("drop", e => {
-    //     e.preventDefault();
-    //     var data = e.dataTransfer.getData("text/plain");
-    //     this.el.appendChild(e.view.document.getElementById(data));
     // })
   },
 };
